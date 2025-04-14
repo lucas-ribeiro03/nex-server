@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -18,7 +20,7 @@ app.use("/postLikes", postLikesRouter);
 app.use("/users", followsRouter);
 
 db.sequelize.sync().then(() => {
-  app.listen(3000, () => {
+  app.listen(process.env.APP_PORT || 3001, () => {
     console.log("Rodando servidor");
   });
 });
