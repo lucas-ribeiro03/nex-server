@@ -17,9 +17,8 @@
     "username": "root",
     "password": "IzYDWGKTuxqzqnMkVDcpUgtCTYLOvpcI",
     "database": "railway",
-    "host": "interchange.proxy.rlwy.net:44236",
+    "host": "interchange.proxy.rlwy.net",
+    "port": "44236",
     "dialect": "mysql"
   }
 }
-
-mysql://root:IzYDWGKTuxqzqnMkVDcpUgtCTYLOvpcI@interchange.proxy.rlwy.net:44236/railway
