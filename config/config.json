@@ -15,9 +15,11 @@
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "password": "IzYDWGKTuxqzqnMkVDcpUgtCTYLOvpcI",
+    "database": "railway",
+    "host": "interchange.proxy.rlwy.net:44236",
     "dialect": "mysql"
   }
 }
+
+mysql://root:IzYDWGKTuxqzqnMkVDcpUgtCTYLOvpcI@interchange.proxy.rlwy.net:44236/railway
