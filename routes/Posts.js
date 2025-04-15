@@ -40,6 +40,7 @@ router.get("/userPosts/:username", validateToken, async (req, res) => {
       as: "likes",
       attributes: ["userId"],
     },
+    order: [["createdAt", "DESC"]],
   });
   res.json(userPosts);
 });
