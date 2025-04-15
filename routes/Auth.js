@@ -66,6 +66,31 @@ router.post("/signin", async (req, res) => {
   res.json(accessToken);
 });
 
+router.post("/google", async (req, res) => {
+  const { username, nickname, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const checkIfUserExists = await Users.findOne({ where: { email } });
+  if (checkIfUserExists) {
+    const accessToken = sign(
+      { username, id: checkIfUserExists.id },
+      "çslnfsoekjnfseçnfsoenf"
+    );
+
+    return res.json(accessToken);
+  }
+  const postUser = await Users.create({
+    username: `@${username}`,
+    nickname,
+    email,
+    password: hashedPassword,
+  });
+  const accessToken = sign(
+    { username, id: postUser.id },
+    "çslnfsoekjnfseçnfsoenf"
+  );
+  return res.json(accessToken);
+});
+
 router.get("/", validateToken, async (req, res) => {
   const userId = req.user.id;
   if (!userId) return res.json({ error: "Você precisa estar logado" });
