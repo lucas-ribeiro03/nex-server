@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { Comments, Posts, Users, Follow } = require("../models");
 const validateToken = require("../middlewares/AuthMiddleware");
-const { where } = require("sequelize");
 
 router.post("/:id/follow", validateToken, async (req, res) => {
   const followerId = req.user.id;
@@ -25,6 +24,7 @@ router.post("/:id/follow", validateToken, async (req, res) => {
 });
 
 router.get("/:username/followers/", validateToken, async (req, res) => {
+  const user = req.user.id;
   const { username } = req.params;
   const { id } = await Users.findOne({ where: { username } });
 
@@ -38,8 +38,13 @@ router.get("/:username/followers/", validateToken, async (req, res) => {
   });
   const followers = await Follow.findAll({
     where: { followingId: id },
+    include: {
+      model: Users,
+      as: "followerUser",
+      attributes: ["username"],
+    },
   });
-  res.json({ followers, following });
+  res.json({ followers, following, user });
 });
 
 router.delete("/:username", validateToken, async (req, res) => {
