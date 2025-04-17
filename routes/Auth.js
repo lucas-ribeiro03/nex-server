@@ -8,7 +8,10 @@ const validateToken = require("../middlewares/AuthMiddleware");
 
 router.post("/signup", async (req, res) => {
   const { email, username, nickname, password } = req.body;
-  const cleanUsername = username.replace(/\s+/g, "").trim().toLowerCase();
+  const cleanUsername = username
+    .replace(/[^a-zA-Z0-9._]/g, "")
+    .trim()
+    .toLowerCase();
 
   let check;
 
