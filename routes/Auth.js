@@ -8,6 +8,7 @@ const validateToken = require("../middlewares/AuthMiddleware");
 
 router.post("/signup", async (req, res) => {
   const { email, username, nickname, password } = req.body;
+  const cleanUsername = username.replace(/\s+/g, "").trim().toLowerCase();
 
   let check;
 
@@ -20,7 +21,7 @@ router.post("/signup", async (req, res) => {
     if (check) return res.json({ error: "Email  já cadastrado" });
   } else if (username) {
     const checkIfUsernameExists = await Users.findOne({
-      where: { username: `@${username}` },
+      where: { username: `@${cleanUsername}` },
     });
 
     check = checkIfUsernameExists;
