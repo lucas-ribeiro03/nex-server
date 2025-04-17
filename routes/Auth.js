@@ -8,10 +8,13 @@ const validateToken = require("../middlewares/AuthMiddleware");
 
 router.post("/signup", async (req, res) => {
   const { email, username, nickname, password } = req.body;
-  const cleanUsername = username
-    .replace(/[^a-zA-Z0-9._]/g, "")
-    .trim()
-    .toLowerCase();
+  let cleanUsername = "";
+  if (username) {
+    cleanUsername = username
+      .replace(/[^a-zA-Z0-9._]/g, "")
+      .trim()
+      .toLowerCase();
+  }
 
   let check;
 
@@ -38,7 +41,7 @@ router.post("/signup", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await Users.create({
     email,
-    username: `@${username}`,
+    username: `@${cleanUsername}`,
     nickname,
     password: hashedPassword,
   });
