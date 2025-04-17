@@ -98,6 +98,19 @@ router.post("/google", async (req, res) => {
   return res.json(accessToken);
 });
 
+router.post("/search-users", async (req, res) => {
+  console.log("to aqui hein");
+  const { username } = req.body;
+  const user = await Users.findAll({
+    where: {
+      username: {
+        [Op.like]: `%@${username}%`,
+      },
+    },
+  });
+  res.json(user);
+});
+
 router.get("/", validateToken, async (req, res) => {
   const userId = req.user.id;
   if (!userId) return res.json({ error: "Você precisa estar logado" });
