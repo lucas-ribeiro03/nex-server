@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { PostLikes } = require("../models");
+const { PostLikes, Users } = require("../models");
 const validateToken = require("../middlewares/AuthMiddleware");
 
 router.post("/", validateToken, async (req, res) => {
@@ -14,12 +14,25 @@ router.post("/", validateToken, async (req, res) => {
 });
 
 router.get("/", validateToken, async (req, res) => {
-  console.log("...................................");
   const { id } = req.user;
   const likedPosts = await PostLikes.findAll({ where: { userId: id } });
   console.log("likedPosts:", likedPosts);
   if (!likedPosts) return res.json({ message: "Não há posts curtidos" });
   res.json(likedPosts);
+});
+
+router.get("/wholiked", async (req, res) => {
+  const whoLiked = await PostLikes.findAll({
+    include: [
+      {
+        model: Users,
+        as: "user",
+        attributes: ["username"],
+      },
+    ],
+  });
+
+  res.json(whoLiked);
 });
 
 router.get("/:id", validateToken, async (req, res) => {
