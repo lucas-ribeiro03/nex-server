@@ -34,9 +34,6 @@ router.post("/signup", async (req, res) => {
     if (check) return res.json({ error: "Nome de usuário já cadastrado" });
   }
 
-  console.log(req.body);
-  console.log(`check: `, check);
-
   if (!password) return res.json("Usuário encontrado, aguardando senha");
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = await Users.create({
@@ -75,6 +72,13 @@ router.post("/signin", async (req, res) => {
 
 router.post("/google", async (req, res) => {
   const { username, nickname, email, password } = req.body;
+  let cleanUsername = "";
+  if (username) {
+    cleanUsername = username
+      .replace(/[^a-zA-Z0-9._]/g, "")
+      .trim()
+      .toLowerCase();
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   const checkIfUserExists = await Users.findOne({ where: { email } });
   if (checkIfUserExists) {
@@ -86,9 +90,9 @@ router.post("/google", async (req, res) => {
     return res.json(accessToken);
   }
   const postUser = await Users.create({
-    username: `@${username}`,
-    nickname,
     email,
+    username: `@${cleanUsername}`,
+    nickname,
     password: hashedPassword,
   });
   const accessToken = sign(
