@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { PostLikes, Users } = require("../models");
 const validateToken = require("../middlewares/AuthMiddleware");
+const { where } = require("sequelize");
 
 router.post("/", validateToken, async (req, res) => {
   const { id } = req.user;
@@ -32,6 +33,24 @@ router.get("/wholiked", async (req, res) => {
     ],
   });
 
+  res.json(whoLiked);
+  console.log("passei por aqui sem querer");
+});
+
+router.get("/whoLiked/:postId", async (req, res) => {
+  const { postId } = req.params;
+  const whoLiked = await PostLikes.findAll({
+    where: { postId },
+    include: [
+      {
+        model: Users,
+        as: "user",
+        attributes: ["username"],
+      },
+    ],
+  });
+  console.log(postId);
+  console.log(whoLiked);
   res.json(whoLiked);
 });
 
