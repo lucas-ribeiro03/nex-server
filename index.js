@@ -12,6 +12,7 @@ const usersRouter = require("./routes/Auth");
 const commentsRouter = require("./routes/Comments");
 const postLikesRouter = require("./routes/PostLikes");
 const followsRouter = require("./routes/Follows");
+const notificationsRouter = require("./routes/Notifications");
 const path = require("path");
 
 app.use("/posts", postsRouter);
@@ -19,6 +20,7 @@ app.use("/auth", usersRouter);
 app.use("/comments", commentsRouter);
 app.use("/postLikes", postLikesRouter);
 app.use("/users", followsRouter);
+app.use("/notifications", notificationsRouter);
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
