@@ -13,6 +13,11 @@ router.post("/", validateToken, async (req, res) => {
   res.json(comment);
 });
 
+router.get("/", async (req, res) => {
+  const comments = await Comments.findAll();
+  res.json(comments);
+});
+
 router.get("/:postId", async (req, res) => {
   const { postId } = req.params;
 
