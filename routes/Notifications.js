@@ -48,9 +48,7 @@ router.post("/comment", validateToken, async (req, res) => {
   const { postId } = req.body;
   const receiver = await Posts.findByPk(postId);
 
-  console.log("ok");
   if (sender === receiver.id) return;
-  console.log("ok2");
 
   const notification = await Notifications.create({
     notificationType: "comment",

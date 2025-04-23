@@ -33,7 +33,6 @@ router.post("/", validateToken, async (req, res) => {
 router.get("/userPosts/:username", validateToken, async (req, res) => {
   const { username } = req.params;
   const user = await Users.findOne({ where: { username } });
-  console.log("user:", user.id);
   const userPosts = await Posts.findAll({
     where: { userId: user.id },
     include: {
