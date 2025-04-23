@@ -43,6 +43,26 @@ router.post("/like", validateToken, async (req, res) => {
   res.json(notification);
 });
 
+router.post("/comment", validateToken, async (req, res) => {
+  const sender = req.user.id;
+  const { postId } = req.body;
+  const receiver = await Posts.findByPk(postId);
+
+  console.log("ok");
+  if (sender === receiver.id) return;
+  console.log("ok2");
+
+  const notification = await Notifications.create({
+    notificationType: "comment",
+    isRead: false,
+    receiverId: receiver.userId,
+    senderId: sender,
+    postId,
+  });
+
+  res.json(notification);
+});
+
 router.get("/", validateToken, async (req, res) => {
   const receiverId = req.user.id;
   const notification = await Notifications.findAll({
